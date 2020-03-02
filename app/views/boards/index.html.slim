@@ -1,0 +1,43 @@
+
+h1 投稿一覧
+
+= link_to '新規登録', new_board_path, class: 'btn btn-primary mb-3'
+
+= search_form_for @q,class: 'mb-5' do |f|
+  .form-group.row
+    = f.label :title,'タイトル',class: 'col-sm-2 col-form-label'
+    .col-sm-10
+      = f.search_field :title_cont,class: 'form_control'
+  /.form-group.row
+    = f.label :tag,'タグ',class: 'col-sm-2 col-form-label'
+    .col-sm-10
+      = f.collection_select :tag_id_cont,@tags,:id, :name, :include_blank => '指定なし',class: 'form_control'
+  .form-group
+    =f.submit class: 'btn btn-outline-primary'
+    
+
+
+= paginate @boards
+
+
+.ml-auto.boards__linkBox
+  = form_with url: boards_path, method: :get, class: 'boards__searchForm' do 
+    = select_tag :tag_id,options_from_collection_for_select(Tag.all, :id, :name, params[:tag_id]),{prompt: 'タグで絞り込み',class: 'form-control boards__select',onchange: 'submit(this.form);'}
+   
+
+
+table.table.table-hover
+  thead.thead-default
+    tr
+      th= Board.human_attribute_name(:title)
+      th= Board.human_attribute_name(:created_at)
+  tbody
+    - @boards.each do |board|
+      tr 
+        td= link_to board.title, board
+        td= link_to board.created_at, board
+        td
+          =link_to '編集',edit_board_path(board),class: 'btn btn-primary mr-3'
+          =link_to '削除', board, method: :delete, data: {confirm: "投稿「#{board.title}」を削除してもよろしいですか？"},class: 'btn btn-danger'
+
+

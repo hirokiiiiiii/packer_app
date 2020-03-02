@@ -1,0 +1,13 @@
+h1 詳細表示
+
+
+= render @board
+= link_to '編集', edit_board_path, class: 'btn btn-primary mr-3'
+= link_to '削除', @board, method: :delete, data: { confirm: "掲示板「#{@board.title}」を削除します。よろしいですか？" }, class: 'btn btn-danger'
+
+
+.p-comment__list
+  .p-comment__listTitle コメント
+  = render @board.comments 
+
+= render partial: 'comments/form', locals: { comment: @comment } 

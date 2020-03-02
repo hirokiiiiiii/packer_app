@@ -1,0 +1,19 @@
+h1 編集
+
+
+
+= form_with model: @board, local: true do |f|
+  .form-group
+    = f.label :title
+    = f.text_field :title, class: 'form-control', id: 'board_title'
+  .form-group
+    = f.label :context
+    = f.text_area :context, rows: 5, class: 'form-control', id: 'board_context'
+  .form-group
+    span タグ
+    = f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |tag| 
+      .form-check
+        = tag.label class: 'form-check-label' do 
+          = tag.check_box class: 'form-check-input' 
+          = tag.text 
+  = f.submit nil, class: 'btn btn-primary'
